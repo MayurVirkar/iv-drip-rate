@@ -1,5 +1,6 @@
 import './App.css';
 import { CameraView, useCamera, useWakeLock } from './camera';
+import ChamberGuideOverlay from './overlay/ChamberGuideOverlay';
 
 export default function App() {
   const camera = useCamera();
@@ -23,6 +24,7 @@ export default function App() {
           error={camera.error}
           onStart={camera.start}
         />
+        <ChamberGuideOverlay />
       </main>
 
       <footer className="stats" aria-label="Live drip statistics">
