@@ -1,10 +1,10 @@
 import './App.css';
+import { CameraView, useCamera, useWakeLock } from './camera';
 
-// Phase 1 scaffold. Camera capture (issue #2), overlay (issue #3), detection
-// (issue #4), rate math (issue #5), drop-factor UI (issue #6), and clinical
-// copy (issue #7) all land in follow-ups. Stats display a dash — never a
-// literal "0" — because a nurse reads 0 as "infusion stopped".
 export default function App() {
+  const camera = useCamera();
+  useWakeLock(camera.state === 'active');
+
   return (
     <div className="app">
       <header className="disclaimer" role="note">
@@ -17,12 +17,12 @@ export default function App() {
       </header>
 
       <main className="stage" aria-label="Camera view">
-        <div className="camera-placeholder" aria-label="Camera area placeholder">
-          <div className="camera-placeholder__label">Camera preview</div>
-          <div className="camera-placeholder__sub">
-            Tap-to-start &amp; rear-camera capture land in TEST-2.
-          </div>
-        </div>
+        <CameraView
+          ref={camera.videoRef}
+          state={camera.state}
+          error={camera.error}
+          onStart={camera.start}
+        />
       </main>
 
       <footer className="stats" aria-label="Live drip statistics">
