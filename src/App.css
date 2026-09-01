@@ -220,3 +220,17 @@
     border-left: 1px solid var(--edge);
   }
 }
+
+/* Fail-closed visual: unknown reads as a dead dash, settling is muted,
+ * live is bright. Nurse should see at a glance whether a number can be trusted. */
+.stats[data-state='unknown'] .stat__value {
+  color: var(--text-dim);
+}
+
+.stats[data-state='settling'] .stat__value {
+  color: #d0c69a;
+}
+
+.stats[data-state='live'] .stat__value {
+  color: var(--accent);
+}
