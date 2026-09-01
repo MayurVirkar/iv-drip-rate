@@ -6,6 +6,7 @@ import { useWakeLock } from './camera/useWakeLock';
 import ChamberGuideOverlay from './overlay/ChamberGuideOverlay';
 import { DetectorDebugHud, useDropDetector } from './detector';
 import { useRateEstimator, type Snapshot } from './estimator';
+import { DropFactorSelector } from './DropFactorSelector';
 
 export default function App() {
   const camera = useCamera();
@@ -75,8 +76,13 @@ export default function App() {
           label="mL/hr"
           value={formatRate(estimator.snapshot.mLPerHr)}
           title={metaTitle(estimator.snapshot)}
+          extra={
+            <DropFactorSelector
+              value={estimator.factor}
+              onChange={estimator.setFactor}
+            />
+          }
         />
-        <Stat label="factor" value={String(estimator.factor)} hint="gtt/mL" />
       </footer>
     </div>
   );
@@ -92,11 +98,13 @@ function Stat({
   value,
   hint,
   title,
+  extra,
 }: {
   label: string;
   value: string;
   hint?: string;
   title?: string;
+  extra?: React.ReactNode;
 }) {
   return (
     <div className="stat" role="group" aria-label={label} title={title}>
@@ -107,6 +115,7 @@ function Stat({
         {label}
         {hint ? <span className="stat__hint"> ({hint})</span> : null}
       </div>
+      {extra && <div className="stat__extra">{extra}</div>}
     </div>
   );
 }

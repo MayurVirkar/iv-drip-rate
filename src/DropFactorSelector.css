@@ -1,0 +1,124 @@
+.drop-factor-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.drop-factor-selector__label {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #666);
+}
+
+.drop-factor-selector__select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border, #ccc);
+  border-radius: 4px;
+  background: var(--bg-input, white);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.drop-factor-selector__select:hover {
+  border-color: var(--border-hover, #999);
+}
+
+.drop-factor-selector__select:focus {
+  outline: 2px solid var(--focus, #0066cc);
+  outline-offset: 2px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal__title {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #222);
+}
+
+.modal__body {
+  margin-bottom: 1.5rem;
+}
+
+.modal__body p {
+  margin: 0.5rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.modal__warning {
+  padding: 0.75rem;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  color: #856404;
+  font-weight: 500;
+}
+
+.modal__guidance {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #666);
+  font-style: italic;
+}
+
+.modal__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.modal__button {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal__button--cancel {
+  background: var(--bg-cancel, #f0f0f0);
+  color: var(--text-primary, #222);
+}
+
+.modal__button--cancel:hover {
+  background: #e0e0e0;
+}
+
+.modal__button--cancel:focus {
+  outline: 2px solid var(--focus, #0066cc);
+  outline-offset: 2px;
+}
+
+.modal__button--confirm {
+  background: var(--primary, #0066cc);
+  color: white;
+}
+
+.modal__button--confirm:hover {
+  background: #0052a3;
+}
+
+.modal__button--confirm:focus {
+  outline: 2px solid var(--focus, #0066cc);
+  outline-offset: 2px;
+}

@@ -234,3 +234,7 @@
 .stats[data-state='live'] .stat__value {
   color: var(--accent);
 }
+
+.stat__extra {
+  margin-top: 8px;
+}
