@@ -14,13 +14,14 @@ export default function App() {
   useWakeLock(camera.state === 'active');
 
   const stageRef = useRef<HTMLElement>(null);
-  const detector = useDropDetector(camera.videoRef, stageRef, {
-    enabled: camera.state === 'active',
-  });
 
   const estimator = useRateEstimator({
     cameraActive: camera.state === 'active',
-    // baselineValid comes from TEST-4's detector once wired.
+  });
+
+  const detector = useDropDetector(camera.videoRef, stageRef, {
+    enabled: camera.state === 'active',
+    onDrop: (e) => estimator.report(e.t),
   });
 
   // Debug bridge — lets TEST-4's detector (or the DevTools console during
@@ -53,7 +54,7 @@ export default function App() {
           />
           <ChamberGuideOverlay />
           {debug && camera.state === 'active' && (
-            <DetectorDebugHud state={detector} />
+            <DetectorDebugHud state={detector} estimatorState={estimator.snapshot.state} />
           )}
         </main>
 
