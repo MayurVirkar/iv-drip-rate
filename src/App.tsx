@@ -7,6 +7,7 @@ import ChamberGuideOverlay from './overlay/ChamberGuideOverlay';
 import { DetectorDebugHud, useDropDetector } from './detector';
 import { useRateEstimator, type Snapshot } from './estimator';
 import { DropFactorSelector } from './DropFactorSelector';
+import { DisclaimerGate, DisclaimerStrip } from './DisclaimerGate';
 
 export default function App() {
   const camera = useCamera();
@@ -39,52 +40,47 @@ export default function App() {
   const debug = isDebugEnabled();
 
   return (
-    <div className="app">
-      <header className="disclaimer" role="note">
-        <strong>PLACEHOLDER — replaced by IV Clinical Safety.</strong>
-        <span>
-          {' '}
-          Not a medical device. Prototype only — verify with a manual count before
-          acting.
-        </span>
-      </header>
+    <DisclaimerGate>
+      <div className="app">
+        <DisclaimerStrip />
 
-      <main className="stage" aria-label="Camera view" ref={stageRef}>
-        <CameraView
-          ref={camera.videoRef}
-          state={camera.state}
-          error={camera.error}
-          onStart={camera.start}
-        />
-        <ChamberGuideOverlay />
-        {debug && camera.state === 'active' && (
-          <DetectorDebugHud state={detector} />
-        )}
-      </main>
+        <main className="stage" aria-label="Camera view" ref={stageRef}>
+          <CameraView
+            ref={camera.videoRef}
+            state={camera.state}
+            error={camera.error}
+            onStart={camera.start}
+          />
+          <ChamberGuideOverlay />
+          {debug && camera.state === 'active' && (
+            <DetectorDebugHud state={detector} />
+          )}
+        </main>
 
-      <footer
-        className="stats"
-        aria-label="Live drip statistics"
-        data-state={estimator.snapshot.state}
-      >
-        <Stat
-          label="drops/min"
-          value={formatRate(estimator.snapshot.dropsPerMin)}
-          title={metaTitle(estimator.snapshot)}
-        />
-        <Stat
-          label="mL/hr"
-          value={formatRate(estimator.snapshot.mLPerHr)}
-          title={metaTitle(estimator.snapshot)}
-          extra={
-            <DropFactorSelector
-              value={estimator.factor}
-              onChange={estimator.setFactor}
-            />
-          }
-        />
-      </footer>
-    </div>
+        <footer
+          className="stats"
+          aria-label="Live drip statistics"
+          data-state={estimator.snapshot.state}
+        >
+          <Stat
+            label="drops/min"
+            value={formatRate(estimator.snapshot.dropsPerMin)}
+            title={metaTitle(estimator.snapshot)}
+          />
+          <Stat
+            label="mL/hr"
+            value={formatRate(estimator.snapshot.mLPerHr)}
+            title={metaTitle(estimator.snapshot)}
+            extra={
+              <DropFactorSelector
+                value={estimator.factor}
+                onChange={estimator.setFactor}
+              />
+            }
+          />
+        </footer>
+      </div>
+    </DisclaimerGate>
   );
 }
 
