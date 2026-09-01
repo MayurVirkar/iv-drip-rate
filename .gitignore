@@ -7,3 +7,4 @@ dist/
 .env
 .env.local
 CLAUDE.md
+initial-unknown-state.png
