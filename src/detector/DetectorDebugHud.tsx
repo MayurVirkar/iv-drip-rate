@@ -7,10 +7,25 @@ import './debug-hud.css';
 
 export interface DetectorDebugHudProps {
   state: DetectorState;
+  kThreshold: number;
   estimatorState?: 'unknown' | 'settling' | 'live';
+  estimatorIntervals?: number[];
 }
 
-export function DetectorDebugHud({ state, estimatorState }: DetectorDebugHudProps) {
+export function DetectorDebugHud({ state, kThreshold, estimatorState, estimatorIntervals }: DetectorDebugHudProps) {
+  // Compute dips/min from recent entries
+  const dipsPerMin = state.recentDipEntries.length > 0
+    ? (state.recentDipEntries.length / 
+       ((state.recentDipEntries[state.recentDipEntries.length - 1] - 
+         state.recentDipEntries[0]) / 60000)) || 0
+    : 0;
+
+  // Format last 3 intervals for display
+  const lastIntervals = (estimatorIntervals || []).slice(-3);
+  const intervalsDisplay = lastIntervals.length > 0
+    ? lastIntervals.map(iv => Math.round(iv)).join(', ')
+    : '—';
+
   return (
     <div className="detector-hud" aria-hidden="true">
       <span className={`detector-hud__pip detector-hud__pip--${state.baseline_valid ? 'ok' : 'bad'}`} />
@@ -22,6 +37,9 @@ export function DetectorDebugHud({ state, estimatorState }: DetectorDebugHudProp
       <span>frames {state.frameCount}</span>
       <span>drops {state.dropCount}</span>
       <span>{state.inDip ? 'DIP' : ''}</span>
+      <span>k {formatNum(kThreshold, 1)}</span>
+      <span>dips/min {formatNum(dipsPerMin, 1)}</span>
+      <span>est intervals [{intervalsDisplay}]</span>
     </div>
   );
 }

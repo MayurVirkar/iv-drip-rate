@@ -22,6 +22,7 @@ export interface UseRateEstimatorResult {
   factor: number;
   setFactor: (f: number) => void;
   report: (t?: number) => void;
+  intervals: number[];
 }
 
 const UNKNOWN: Snapshot = { dropsPerMin: null, mLPerHr: null, state: 'unknown' };
@@ -92,7 +93,7 @@ export function useRateEstimator(input: UseRateEstimatorInput): UseRateEstimator
     return () => window.clearInterval(id);
   }, [refresh, tickMs]);
 
-  return { snapshot: snap, factor, setFactor, report };
+  return { snapshot: snap, factor, setFactor, report, intervals: stateRef.current.intervals };
 }
 
 function equal(a: Snapshot, b: Snapshot): boolean {

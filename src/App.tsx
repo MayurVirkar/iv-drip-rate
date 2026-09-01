@@ -54,7 +54,7 @@ export default function App() {
           />
           <ChamberGuideOverlay />
           {debug && camera.state === 'active' && (
-            <DetectorDebugHud state={detector} estimatorState={estimator.snapshot.state} />
+            <DetectorDebugHud state={detector} kThreshold={detector.kThreshold} estimatorState={estimator.snapshot.state} estimatorIntervals={estimator.intervals} />
           )}
         </main>
 

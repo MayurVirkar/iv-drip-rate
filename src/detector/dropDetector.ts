@@ -42,7 +42,7 @@ export interface DetectorOptions {
 export const DEFAULT_OPTIONS: DetectorOptions = {
   emaAlpha: 0.02,
   varAlpha: 0.02,
-  kThreshold: 4,
+  kThreshold: 2.5,
   refractoryMs: 120,
   warmupFrames: 30,
   minLuma: 15,
@@ -60,6 +60,8 @@ export interface DetectorState {
   frameCount: number;
   dropCount: number;
   lastDropAt: number | null;
+  dipEntryCount: number;
+  recentDipEntries: number[];
 }
 
 export interface DropEvent {
@@ -88,6 +90,8 @@ export function createDetector(userOpts: Partial<DetectorOptions> = {}): Detecto
   let frameCount = 0;
   let dropCount = 0;
   let lastDropAt: number | null = null;
+  let dipEntryCount = 0;
+  let recentDipEntries: number[] = [];
   let dipTroughT = 0;
   let dipTroughLuma = 0;
 
@@ -100,6 +104,8 @@ export function createDetector(userOpts: Partial<DetectorOptions> = {}): Detecto
     frameCount = 0;
     dropCount = 0;
     lastDropAt = null;
+    dipEntryCount = 0;
+    recentDipEntries = [];
     dipTroughT = 0;
     dipTroughLuma = 0;
   }
@@ -144,6 +150,11 @@ export function createDetector(userOpts: Partial<DetectorOptions> = {}): Detecto
         lastDropAt === null || t - lastDropAt >= options.refractoryMs;
       if (baselineValid && refractoryOk && sampleLuma < dipEnterThresh) {
         inDip = true;
+        dipEntryCount += 1;
+        recentDipEntries.push(t);
+        // Keep only last 60s of entries for dips/min calculation
+        const cutoff = t - 60000;
+        recentDipEntries = recentDipEntries.filter(t => t >= cutoff);
         dipTroughT = t;
         dipTroughLuma = sampleLuma;
       }
@@ -172,6 +183,8 @@ export function createDetector(userOpts: Partial<DetectorOptions> = {}): Detecto
       frameCount,
       dropCount,
       lastDropAt,
+      dipEntryCount,
+      recentDipEntries,
     };
   }
 

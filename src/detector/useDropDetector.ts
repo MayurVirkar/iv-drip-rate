@@ -30,6 +30,7 @@ export interface UseDropDetectorOptions extends Partial<DetectorOptions> {
 
 export interface UseDropDetectorResult extends DetectorState {
   reset: () => void;
+  kThreshold: number;
 }
 
 const EMPTY_SNAPSHOT: DetectorState = {
@@ -41,6 +42,8 @@ const EMPTY_SNAPSHOT: DetectorState = {
   frameCount: 0,
   dropCount: 0,
   lastDropAt: null,
+  dipEntryCount: 0,
+  recentDipEntries: [],
 };
 
 // Subscribes to the shared <video> ref from the camera module and feeds the
@@ -149,6 +152,7 @@ export function useDropDetector(
 
   return {
     ...snapshot,
+    kThreshold: optsRef.current.kThreshold ?? 2.5,
     reset: () => {
       const d = detectorRef.current;
       if (!d) return;
