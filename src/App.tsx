@@ -4,6 +4,8 @@ import './App.css';
 // (issue #4), rate math (issue #5), drop-factor UI (issue #6), and clinical
 // copy (issue #7) all land in follow-ups. Stats display a dash — never a
 // literal "0" — because a nurse reads 0 as "infusion stopped".
+import ChamberGuideOverlay from './overlay/ChamberGuideOverlay';
+
 export default function App() {
   return (
     <div className="app">
@@ -23,6 +25,7 @@ export default function App() {
             Tap-to-start &amp; rear-camera capture land in TEST-2.
           </div>
         </div>
+        <ChamberGuideOverlay />
       </main>
 
       <footer className="stats" aria-label="Live drip statistics">
